@@ -1,49 +1,96 @@
-﻿using System.Collections;
+﻿// ----------------------------------------------------------------------------
+// Copyright (c) 2023 [Chewy551]. All rights reserved.
+// ----------------------------------------------------------------------------
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// The abstract base class for all AI states. This class defines the common interface and default implementations 
-// for behaviors that all AI states should have, such as entering/exiting a state, responding to triggers, etc.
+// ------------------------------------------------------------------
+// Name : AIState
+// Desc : Abstract base class representing the general structure and 
+//        functionality of an AI state. This class provides the interface
+//        and default implementations for behaviors that all AI states should have.
+// ------------------------------------------------------------------
 public abstract class AIState : MonoBehaviour
 {
-    // Allows external classes, like the AIStateMachine, to associate themselves with this state.
+    // ------------------------------------------------------------------
+    // Name : SetStateMachine
+    // Desc : Allows external classes, like AIStateMachine, to associate 
+    //        themselves with this state.
+    // ------------------------------------------------------------------
     public void SetStateMachine(AIStateMachine stateMachine)
     {
         _stateMachine = stateMachine;
     }
 
-    // Virtual methods that provide default implementations for state behaviors. 
-    // Derived state classes can override these methods to provide state-specific behavior.
-
-    // Called when transitioning into this state.
+    // ------------------------------------------------------------------
+    // Name : OnEnterState
+    // Desc : Virtual method called when transitioning into this state. 
+    //        Can be overridden by derived state classes.
+    // ------------------------------------------------------------------
     public virtual void OnEnterState() { }
 
-    // Called when transitioning out of this state.
+    // ------------------------------------------------------------------
+    // Name : OnExitState
+    // Desc : Virtual method called when transitioning out of this state. 
+    //        Can be overridden by derived state classes.
+    // ------------------------------------------------------------------
     public virtual void OnExitState() { }
 
-    // Called when the associated AI's animator updates its animations.
-    public virtual void OnAnimatorUpdated() { }
+    // ------------------------------------------------------------------
+    // Name : OnAnimatorUpdated
+    // Desc : Called each frame when the Animator's animations are updated.
+    //        Adjusts the AI's navigation and rotation based on the Animator's 
+    //        root motion if root motion is enabled in the state machine.
+    // ------------------------------------------------------------------
+    public virtual void OnAnimatorUpdated()
+    {
+        if (_stateMachine.useRootPosition)
+        {
+            _stateMachine.NavAgent.velocity = _stateMachine.Animator.deltaPosition / Time.deltaTime;
+        }
 
-    // Called when the associated AI's animator updates its inverse kinematics.
+        if (_stateMachine.useRootRotation)
+        {
+            _stateMachine.transform.rotation = _stateMachine.Animator.rootRotation;
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // Name : OnAnimatorIKUpdated
+    // Desc : Virtual method called when the associated AI's animator updates 
+    //        its inverse kinematics. Can be overridden by derived state classes.
+    // ------------------------------------------------------------------
     public virtual void OnAnimatorIKUpdated() { }
 
-    // Called when a trigger event (defined by the AITriggerEventType enum) occurs.
+    // ------------------------------------------------------------------
+    // Name : OnTriggerEvent
+    // Desc : Virtual method called when a trigger event occurs. Responds based 
+    //        on the type of trigger event and the collider involved.
+    // ------------------------------------------------------------------
     public virtual void OnTriggerEvent(AITriggerEventType eventType, Collider other) { }
 
-    // Called when the AI reaches its destination.
+    // ------------------------------------------------------------------
+    // Name : OnDestinationReached
+    // Desc : Virtual method called when the AI reaches its destination.
+    // ------------------------------------------------------------------
     public virtual void OnDestinationReached(bool isReached) { }
 
-    // Abstract methods that must be implemented by derived state classes.
-
-    // Must return the type of this state (e.g., Idle, Attack, etc.).
+    // ------------------------------------------------------------------
+    // Name : GetStateType
+    // Desc : Abstract method that returns the type of this AI state.
+    //        Must be implemented by derived state classes.
+    // ------------------------------------------------------------------
     public abstract AIStateType GetStateType();
 
-    // Called every frame to update this state's logic and possibly request a state transition.
-    // Must return the type of state the AI should transition to after this update.
+    // ------------------------------------------------------------------
+    // Name : OnUpdate
+    // Desc : Abstract method called every frame to update this state's logic. 
+    //        Determines if a state transition is needed and returns the 
+    //        new state type. Must be implemented by derived state classes.
+    // ------------------------------------------------------------------
     public abstract AIStateType OnUpdate();
 
-    // Protected variables.
-
-    // Reference to the AIStateMachine that's controlling this state.
-    protected AIStateMachine _stateMachine;
+    // Protected Member Variables
+    protected AIStateMachine _stateMachine; // Reference to the controlling AI State Machine.
 }

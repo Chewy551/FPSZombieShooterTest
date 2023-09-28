@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿// ----------------------------------------------------------------------------
+// Copyright (c) 2023 [Chewy551]. All rights reserved.
+// ----------------------------------------------------------------------------
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
