@@ -29,6 +29,7 @@ public class AIZombieStateMachine : AIStateMachine
     private bool _feeding    = false; // Whether or not the zombie is feeding
     private bool _crawling   = false; // Whether or not the zombie is crawling
     private int  _attackType = 0;     // 0 = none, 1 = head, 2 = body
+    private float _speed     = 0.0f;  // The speed of the zombie
 
     // Hashes
     // Cached hashes for the various parameters used in the Animator, 
@@ -51,11 +52,7 @@ public class AIZombieStateMachine : AIStateMachine
     public int      attackType        { get { return _attackType; }           set { _attackType = value; }}
     public bool     feeding           { get { return _feeding; }              set { _feeding = value; }}
     public int      seeking           { get { return _seeking; }              set { _seeking = value; }}
-    public float    speed 
-    {
-        get { return _navAgent != null ? _navAgent.speed : 0.0f;} // If the navAgent is not null, return its speed, otherwise return 0
-        set { if (_navAgent != null) _navAgent.speed = value;}    // If the navAgent is not null, set its speed to the value passed in
-    }
+    public float    speed             { get { return _speed; }                set { _speed = value; }}
 
     // ------------------------------------------------------------------------
     // Name : Update
@@ -69,7 +66,7 @@ public class AIZombieStateMachine : AIStateMachine
         // Ensure the animator component exists before trying to set its parameters.
         if (_animator!=null)
         {
-            _animator.SetFloat   (_speedHash,    _navAgent.speed); 
+            _animator.SetFloat   (_speedHash,    _speed);
             _animator.SetBool    (_feedingHash,  _feeding);        
             _animator.SetInteger (_seekingHash,  _seeking);        
             _animator.SetInteger (_attackHash,   _attackType);     

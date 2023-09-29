@@ -42,7 +42,7 @@ public abstract class AIZombieState : AIState
 
     public override void SetStateMachine(AIStateMachine stateMachine)
     {
-        if (_stateMachine.GetType() == typeof(AIZombieStateMachine))
+        if (stateMachine.GetType() == typeof(AIZombieStateMachine))
         {
             base.SetStateMachine(stateMachine);
             _zombieStateMachine = (AIZombieStateMachine)stateMachine;
