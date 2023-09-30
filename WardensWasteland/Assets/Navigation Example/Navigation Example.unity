@@ -1941,7 +1941,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 815411633}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.5
   m_Height: 2
@@ -1963,12 +1963,12 @@ MonoBehaviour:
   _targetTrigger: {fileID: 1761092763}
   _sensorTrigger: {fileID: 1785862496}
   _stoppingDistance: 1
-  _fov: 60
-  _sight: 0.5
+  _fov: 360
+  _sight: 1
   _hearing: 1
-  _aggression: 0.5
+  _aggression: 1
   _health: 100
-  _intelligence: 0.5
+  _intelligence: 1
   _satisfaction: 1
 --- !u!114 &815411639
 MonoBehaviour:
@@ -1982,7 +1982,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1755f65c7c963c846aa932fee850fa17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _idleTimeRange: {x: 10, y: 60}
+  _idleTimeRange: {x: 1, y: 2}
+--- !u!114 &815411640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815411633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a44315bc5fb5e0499cdfb5960c55f44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _waypointNetwork: {fileID: 1701932394}
+  _randomPatrol: 0
+  _currentWaypoint: 0
+  _turnOnSpotThreshold: 90
+  _slerpSpeed: 5
+  _speed: 2
 --- !u!1 &1041693672
 GameObject:
   m_ObjectHideFlags: 0
@@ -2298,7 +2316,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400126, guid: 9b68a1631aea56a4c871c3072ea40516, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.7071067
       objectReference: {fileID: 0}
     - target: {fileID: 400126, guid: 9b68a1631aea56a4c871c3072ea40516, type: 3}
       propertyPath: m_LocalRotation.z
@@ -2306,7 +2324,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400126, guid: 9b68a1631aea56a4c871c3072ea40516, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071069
       objectReference: {fileID: 0}
     - target: {fileID: 400126, guid: 9b68a1631aea56a4c871c3072ea40516, type: 3}
       propertyPath: m_RootOrder
@@ -2318,7 +2336,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400126, guid: 9b68a1631aea56a4c871c3072ea40516, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90.00001
       objectReference: {fileID: 0}
     - target: {fileID: 400126, guid: 9b68a1631aea56a4c871c3072ea40516, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z

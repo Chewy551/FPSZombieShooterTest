@@ -44,7 +44,7 @@ public class AIZombieState_Idle1 : AIZombieState
         _idleTime = Random.Range(_idleTimeRange.x, _idleTimeRange.y);
         _timer    = 0.0f;
 
-        // Reset various parameters in the state machine for the idle state
+        // Configure State Machine
         _zombieStateMachine.NavAgentControl(true, false);
         _zombieStateMachine.speed = 0;
         _zombieStateMachine.seeking = 0;

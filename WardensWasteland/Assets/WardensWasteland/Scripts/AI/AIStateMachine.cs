@@ -4,6 +4,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 // ------------------------------------------------------------------
 // Name : AIStateType
@@ -52,7 +53,7 @@ public struct AITarget
         _collider = c;
         _position = p;
         _distance = d;
-        _time = UnityEngine.Time.time;
+        _time = Time.time;
     }
 
     // ------------------------------------------------------------------
@@ -96,13 +97,13 @@ public abstract class AIStateMachine : MonoBehaviour
 
     // Cached references for frequently accessed components.
     protected Animator _animator = null; // Reference to the AI's animator.
-    protected UnityEngine.AI.NavMeshAgent _navAgent = null; // Reference to the AI's navigation agent.
+    protected NavMeshAgent _navAgent = null; // Reference to the AI's navigation agent.
     protected Collider _collider = null; // Reference to the AI's collider.
     protected Transform _transform = null; // Reference to the AI's transform component.
 
     // Public properties to provide access to some private/protected members.
-    public Animator Animator { get { return _animator; } }
-    public UnityEngine.AI.NavMeshAgent NavAgent { get { return _navAgent; } }
+    public Animator animator { get { return _animator; } }
+    public NavMeshAgent navAgent { get { return _navAgent; } }
     public Vector3 sensorPosition
     {
         get
@@ -130,12 +131,16 @@ public abstract class AIStateMachine : MonoBehaviour
     public bool useRootPosition { get { return _rootPositionRefCount > 0; } }
     public bool useRootRotation { get { return _rootRotationRefCount > 0; } }
 
+    // Propertie to get the current Target Type. i.e None, Waypoint, Visual_Player, Visual_Light, Visual_Food, Audio
+    public AITargetType targetType { get { return _target.type; } }
+    public Vector3 targetPosition { get { return _target.position; } }
+
     // Initialization of cached references.
     protected virtual void Awake()
     {
         _transform = transform;
         _animator = GetComponent<Animator>();
-        _navAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        _navAgent = GetComponent<NavMeshAgent>();
         _collider = GetComponent<Collider>();
 
         if (GameSceneManager.instance != null)
@@ -193,11 +198,11 @@ public abstract class AIStateMachine : MonoBehaviour
 
     // ------------------------------------------------------------------
     // Name : SetTarget
-    // Desc : Sets the AI's current target based on provided parameters.
+    // Desc : Sets the AI's current target based on provided parameters. Target Type / Collider / Position / Distance
     // ------------------------------------------------------------------
-    public void SetTarget(AITargetType t, Collider c, Vector3 p, float d)
+    public void SetTarget(AITargetType type, Collider collider, Vector3 position, float distance)
     {
-        _target.Set(t, c, p, d); // Set the properties of the target.
+        _target.Set(type, collider, position, distance); // Set the properties of the target.
 
         // If a target trigger collider exists, position it at the target's location and enable it.
         if (_targetTrigger != null)
@@ -208,23 +213,29 @@ public abstract class AIStateMachine : MonoBehaviour
         }
     }
 
-    // Overloaded version of SetTarget that allows specifying a stopping radius.
-    public void SetTarget(AITargetType t, Collider c, Vector3 p, float d, float s)
+    // ------------------------------------------------------------------
+    // Name : SetTarget
+    // Desc : Sets the AI's current target based on provided parameters. Target Type / Collider / Position / Distance / Stopping Distance
+    // ------------------------------------------------------------------
+    public void SetTarget(AITargetType type, Collider collider, Vector3 position, float distance, float stoppingDistance)
     {
-        _target.Set(t, c, p, d);
+        _target.Set(type, collider, position, distance);
 
         if (_targetTrigger != null)
         {
-            _targetTrigger.radius = s;
+            _targetTrigger.radius = stoppingDistance;
             _targetTrigger.transform.position = _target.position;
             _targetTrigger.enabled = true;
         }
     }
 
-    // Overloaded version of SetTarget that takes an AITarget struct as a parameter.
-    public void SetTarget(AITarget t)
+    // ------------------------------------------------------------------
+    // Name : SetTarget
+    // Desc : Sets the AI's current target based on provided parameters. Target Type
+    // ------------------------------------------------------------------
+    public void SetTarget(AITarget type)
     {
-        _target = t;
+        _target = type;
 
         if (_targetTrigger != null)
         {
