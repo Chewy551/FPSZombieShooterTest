@@ -202,11 +202,12 @@ public class AIZombieState_Patrol1 : AIZombieState
     // Name : OnAnimatorIKUpdated
     // Desc : Updates the IK logic for the zombie's animation.
     // ------------------------------------------------------------------------
-    public override void OnAnimatorIKUpdated()
+    /*public override void OnAnimatorIKUpdated()
     {
         if (_zombieStateMachine == null) return;
 
         _zombieStateMachine.animator.SetLookAtPosition(_zombieStateMachine.targetPosition + Vector3.up);
         _zombieStateMachine.animator.SetLookAtWeight(0.55f);
     }
+    */
 }
