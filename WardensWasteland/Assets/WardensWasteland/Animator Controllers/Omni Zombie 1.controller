@@ -668,7 +668,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Walk
+  m_Name: Zombie Walk
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -725,7 +725,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: zombie_idle
+  m_Name: Zombie Idle
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -758,7 +758,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Sprint
+  m_Name: Zombie Sprint
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -787,7 +787,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Jog
+  m_Name: Zombie Jog
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -817,7 +817,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: zombie_turn_left
+  m_Name: Zombie Turn Left
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -846,7 +846,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: zombie_turn_right
+  m_Name: Zombie Turn Right
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -891,13 +891,13 @@ AnimatorStateMachine:
     m_Position: {x: 336, y: 240, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102132327537047798}
-    m_Position: {x: 804, y: 12, z: 0}
+    m_Position: {x: 804, y: 0, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102666888319171106}
     m_Position: {x: 804, y: 84, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102438997827197904}
-    m_Position: {x: 804, y: 156, z: 0}
+    m_Position: {x: 804, y: 168, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []

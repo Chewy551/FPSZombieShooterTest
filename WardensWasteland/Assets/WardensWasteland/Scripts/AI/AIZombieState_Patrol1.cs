@@ -15,9 +15,6 @@ using UnityEngine.AI;
 public class AIZombieState_Patrol1 : AIZombieState
 {
     // Inspector Assigned
-    [SerializeField] AIWaypointNetwork _waypointNetwork = null;
-    [SerializeField] bool              _randomPatrol    = false;
-    [SerializeField] int               _currentWaypoint = 0;
     [SerializeField] float             _turnOnSpotThreshold = 80.0f;
     [SerializeField] float             _slerpSpeed = 5.0f;
     [SerializeField] [Range(0.0f, 3.0f)] float             _speed = 1.0f;
@@ -47,37 +44,10 @@ public class AIZombieState_Patrol1 : AIZombieState
         _zombieStateMachine.seeking = 0;
         _zombieStateMachine.feeding = false;
         _zombieStateMachine.attackType = 0;
-
-        // Logic to set the destination based on waypoints
-        if (_zombieStateMachine.targetType != AITargetType.Waypoint)
-        {
-            _zombieStateMachine.ClearTarget();
-
-            if (_waypointNetwork != null && _waypointNetwork.Waypoints.Count > 0)
-            {
-                if (_randomPatrol)
-                {
-                    _currentWaypoint = Random.Range(0, _waypointNetwork.Waypoints.Count);
-                }
-
-                if (_currentWaypoint < _waypointNetwork.Waypoints.Count)
-                {
-                    Transform waypoint = _waypointNetwork.Waypoints[_currentWaypoint];
-                    if (waypoint != null)
-                    {
-                        _zombieStateMachine.SetTarget(AITargetType.Waypoint,
-                                                      null,
-                                                      waypoint.position,
-                                                      Vector3.Distance(_zombieStateMachine.transform.position, waypoint.position));
-
-                        _zombieStateMachine.navAgent.SetDestination(waypoint.position);
-                    }
-                }
-
-            }
-        }
-
         
+        // Set Destination
+        _zombieStateMachine.navAgent.SetDestination(_zombieStateMachine.GetWaypointPosition(false));
+
         _zombieStateMachine.navAgent.isStopped = false;
     }
 
@@ -140,49 +110,14 @@ public class AIZombieState_Patrol1 : AIZombieState
             !_zombieStateMachine.navAgent.hasPath || 
             _zombieStateMachine.navAgent.pathStatus != NavMeshPathStatus.PathComplete)
         {
-            NextWaypoint();
+            _zombieStateMachine.GetWaypointPosition(true);
         }
 
         // Stay in Patrol State
         return AIStateType.Patrol;
     }
 
-    // ------------------------------------------------------------------------
-    // Name : NextWaypoint
-    // Desc : Transitions the zombie to the next waypoint in the patrol route.
-    // ------------------------------------------------------------------------
-    private void NextWaypoint()
-    {
-        // Increase the current waypoint with wrap-around to zerp (or choose a random waypoint)
-        if (_randomPatrol && _waypointNetwork.Waypoints.Count > 1)
-        {
-            int oldWaypoint = _currentWaypoint;
-            while (_currentWaypoint == oldWaypoint)
-            {
-                _currentWaypoint = Random.Range(0, _waypointNetwork.Waypoints.Count);
-            }
-        }
-        else
-        {
-            _currentWaypoint = _currentWaypoint == _waypointNetwork.Waypoints.Count - 1 ? 0 : _currentWaypoint + 1;
-            Debug.Log("OnDestinationReached choose next waypoint: " +_currentWaypoint);
-        }
-
-        if (_waypointNetwork.Waypoints[_currentWaypoint] != null)
-        {
-            Transform newWaypoint = _waypointNetwork.Waypoints[_currentWaypoint];
-
-            // This is our new target position
-            _zombieStateMachine.SetTarget(AITargetType.Waypoint, 
-                                          null, 
-                                          newWaypoint.transform.position, 
-                                          Vector3.Distance(newWaypoint.transform.position, _zombieStateMachine.transform.position));
-
-            // Set new Path
-            _zombieStateMachine.navAgent.SetDestination(newWaypoint.transform.position);
-        }
-    }
-
+    
     // ------------------------------------------------------------------------
     // Name : OnDestinationReached
     // Desc : Logic that's triggered when the zombie reaches its patrol destination.
@@ -193,8 +128,8 @@ public class AIZombieState_Patrol1 : AIZombieState
 
         if (_zombieStateMachine.targetType == AITargetType.Waypoint)
         {
-            
-            NextWaypoint();
+
+            _zombieStateMachine.GetWaypointPosition(true);
         }
     }
 

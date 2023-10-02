@@ -88,11 +88,15 @@ public abstract class AIStateMachine : MonoBehaviour
     protected AITarget _target = new AITarget(); // The current target of the AI.
     protected int _rootPositionRefCount = 0; // Reference count for root position updates.
     protected int _rootRotationRefCount = 0; // Reference count for root rotation updates.
+    protected bool _isTargetReached = false; // Whether or not the AI has reached its target.
 
     // Serialized fields allowing for adjustments within the Unity editor.
     [SerializeField] protected AIStateType _currentStateType = AIStateType.Idle;
     [SerializeField] protected SphereCollider _targetTrigger = null; // Collider to detect when target is within range.
     [SerializeField] protected SphereCollider _sensorTrigger = null; // Collider to sense environment.
+    [SerializeField] protected AIWaypointNetwork _waypointNetwork = null; // Waypoint network for the AI to follow.
+    [SerializeField] protected bool _randomPatrol = false; // Whether or not the AI should patrol randomly.
+    [SerializeField] protected int _currentWaypoint = -1; // The current waypoint the AI is moving towards.
     [SerializeField][Range(0, 15)] protected float _stoppingDistance = 1.0f; // The distance at which AI stops moving towards its target.
 
     // Cached references for frequently accessed components.
@@ -102,6 +106,7 @@ public abstract class AIStateMachine : MonoBehaviour
     protected Transform _transform = null; // Reference to the AI's transform component.
 
     // Public properties to provide access to some private/protected members.
+    public bool inMeleeRange { get; set; } // Whether or not the AI is in melee range of its target.
     public Animator animator { get { return _animator; } }
     public NavMeshAgent navAgent { get { return _navAgent; } }
     public Vector3 sensorPosition
@@ -131,9 +136,24 @@ public abstract class AIStateMachine : MonoBehaviour
     public bool useRootPosition { get { return _rootPositionRefCount > 0; } }
     public bool useRootRotation { get { return _rootRotationRefCount > 0; } }
 
-    // Propertie to get the current Target Type. i.e None, Waypoint, Visual_Player, Visual_Light, Visual_Food, Audio
+    // Propertie to get the current Target Type and Position. i.e None, Waypoint, Visual_Player, Visual_Light, Visual_Food, Audio
+    public bool isTargetReached { get { return _isTargetReached; } }
     public AITargetType targetType { get { return _target.type; } }
     public Vector3 targetPosition { get { return _target.position; } }
+    public int targetColliderID
+    {
+        get
+        {
+            if (_target.collider)
+            {
+                return _target.collider.GetInstanceID();
+            }
+            else
+            {
+                return -1;
+            }
+        }
+    }
 
     // Initialization of cached references.
     protected virtual void Awake()
@@ -195,6 +215,76 @@ public abstract class AIStateMachine : MonoBehaviour
             }
         }
     }
+
+    // ------------------------------------------------------------------------
+    // Name : GetWaypointPosition
+    // Desc : Fetched the world space position of the state machine's currently
+    //        set waypoint with optional increment
+    // ------------------------------------------------------------------------
+    public Vector3 GetWaypointPosition(bool increment)
+    {
+        if (_currentWaypoint == -1)
+        {
+            if (_randomPatrol)
+            {
+                _currentWaypoint = Random.Range(0, _waypointNetwork.Waypoints.Count);
+            }
+            else
+            {
+                _currentWaypoint = 0;
+            }
+        }
+        else if (increment)
+        {
+            NextWaypoint();
+        }
+
+        // Fetch the new waypoint from the waypoint list
+        if (_waypointNetwork.Waypoints[_currentWaypoint] != null)
+        {
+            Transform newWaypoint = _waypointNetwork.Waypoints[_currentWaypoint];
+
+            // This is our new target position
+            SetTarget(AITargetType.Waypoint,
+                      null,
+                      newWaypoint.transform.position,
+                      Vector3.Distance(newWaypoint.transform.position, transform.position));
+
+            return newWaypoint.transform.position;
+        }
+
+        return Vector3.zero;
+    }
+
+    // ------------------------------------------------------------------------
+    // Name : NextWaypoint
+    // Desc : Called to select a new waypoint. Either randomly selects a new
+    //        waypoint from the waypoint network or increments the current
+    //        waypoint index (with wrap-around) to the next waypoint in the
+    //        network in sequence. Sets the new waypoint as the new target
+    //        and generates a nav agent path for it.
+    // ------------------------------------------------------------------------
+    private void NextWaypoint()
+    {
+        // Increase the current waypoint with wrap-around to zerp (or choose a random waypoint)
+        if (_randomPatrol && _waypointNetwork.Waypoints.Count > 1)
+        {
+            // Keep generating random waypoint until we find on that isn't current one
+            // NOTE: Very important that waypoint networks do not only have one waypoint
+            int oldWaypoint = _currentWaypoint;
+            while (_currentWaypoint == oldWaypoint)
+            {
+                _currentWaypoint = Random.Range(0, _waypointNetwork.Waypoints.Count);
+            }
+        }
+        else
+        {
+            _currentWaypoint = _currentWaypoint == _waypointNetwork.Waypoints.Count - 1 ? 0 : _currentWaypoint + 1;
+            Debug.Log("OnDestinationReached choose next waypoint: " + _currentWaypoint);
+        }
+
+    }
+
 
     // ------------------------------------------------------------------
     // Name : SetTarget
@@ -273,6 +363,8 @@ public abstract class AIStateMachine : MonoBehaviour
             // Update the distance to the current target.
             _target.distance = Vector3.Distance(_transform.position, _target.position);
         }
+
+        _isTargetReached = false; // Reset the target reached flag.
     }
 
     // ------------------------------------------------------------------
@@ -322,16 +414,28 @@ public abstract class AIStateMachine : MonoBehaviour
     {
         if (_targetTrigger == null || other != _targetTrigger) return;
 
+        _isTargetReached = true; // Notify the AI that it has reached its destination.
+
         if (_currentState)
         {
             _currentState.OnDestinationReached(true); // Notify the current state that the AI has reached its destination.
         }
     }
 
+    protected virtual void OnTriggerStay(Collider other)
+    {
+        if (_targetTrigger == null || other != _targetTrigger) return;
+
+        _isTargetReached = true; // Notify the AI that it has reached its destination.
+    }
+
     // Called when the AI exits a trigger.
-    public void OnTriggerExit(Collider other)
+    protected void OnTriggerExit(Collider other)
     {
         if (_targetTrigger == null || _targetTrigger != other) return;
+
+        _isTargetReached = false; // Notify the AI that it has left its destination.
+
         if (_currentState!=null)
         {
             _currentState.OnDestinationReached(false); // Notify the current state that the AI has left its destination.
