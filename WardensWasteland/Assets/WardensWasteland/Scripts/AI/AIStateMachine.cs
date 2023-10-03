@@ -223,6 +223,12 @@ public abstract class AIStateMachine : MonoBehaviour
     // ------------------------------------------------------------------------
     public Vector3 GetWaypointPosition(bool increment)
     {
+        if (_waypointNetwork == null)
+        {
+            Debug.Log("There is no waypoint network");
+            return Vector3.zero;
+        }
+
         if (_currentWaypoint == -1)
         {
             if (_randomPatrol)
