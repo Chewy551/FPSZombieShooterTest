@@ -37,7 +37,6 @@ public class AIZombieState_Pursuit1 : AIZombieState
 
         // Configure State Machine
         _zombieStateMachine.NavAgentControl(true, false);
-        _zombieStateMachine.speed = _speed;
         _zombieStateMachine.seeking = 0;
         _zombieStateMachine.feeding = false;
         _zombieStateMachine.attackType = 0;
@@ -85,38 +84,47 @@ public class AIZombieState_Pursuit1 : AIZombieState
 
         // If for any reason the nav agent has lost its path then call the event to say we are not longer pursuing
         if (_zombieStateMachine.navAgent.isPathStale ||
-            !_zombieStateMachine.navAgent.hasPath ||
+            (!_zombieStateMachine.navAgent.hasPath && !_zombieStateMachine.navAgent.pathPending)||
             _zombieStateMachine.navAgent.pathStatus != NavMeshPathStatus.PathComplete)
         {
-            _zombieStateMachine.ClearTarget();
             return AIStateType.Alerted;
         }
 
-        // If we are close to the target then turn off the nav agent
-        if (!_zombieStateMachine.useRootRotation && 
-            _zombieStateMachine.targetType == AITargetType.Visual_Light && 
-            _zombieStateMachine.VisualThreat.type == AITargetType.Visual_Player &&
-            _zombieStateMachine.isTargetReached)
+        // If there is no path set speed to 0, otherwise set it to speed and do rotate statement.
+        if (_zombieStateMachine.navAgent.pathPending)
         {
-            Vector3 targetPos = _zombieStateMachine.targetPosition;
-            targetPos.y = _zombieStateMachine.transform.position.y;
-            Quaternion newRot = Quaternion.LookRotation(targetPos - _zombieStateMachine.transform.position);
-            _zombieStateMachine.transform.rotation = newRot;
+            _zombieStateMachine.speed = 0;
         }
-        // Slowly update our rotation to match the nav agents desired rotation BUT only if we are not persuing the player and are not in melee range
-        else if (!_zombieStateMachine.useRootRotation && !_zombieStateMachine.isTargetReached)
+        else
         {
-            // Generate a new Quaternion representing the rotation we should have
-            Quaternion newRot = Quaternion.LookRotation(_zombieStateMachine.navAgent.desiredVelocity);
-            // Smoothly rotate to that new rotation over time
-            _zombieStateMachine.transform.rotation = Quaternion.Slerp(_zombieStateMachine.transform.rotation, newRot, Time.deltaTime * _slerpSpeed);
-        }
-        // If we have reached the target location and there is nothing there, drop to alerted state and look for targets.
-        else if(_zombieStateMachine.isTargetReached)
-        {
-            return AIStateType.Alerted;
-        }
+            _zombieStateMachine.speed = _speed;
 
+            // If we are close to the target then turn off the nav agent
+            if (!_zombieStateMachine.useRootRotation &&
+                _zombieStateMachine.targetType == AITargetType.Visual_Light &&
+                _zombieStateMachine.VisualThreat.type == AITargetType.Visual_Player &&
+                _zombieStateMachine.isTargetReached)
+            {
+                Vector3 targetPos = _zombieStateMachine.targetPosition;
+                targetPos.y = _zombieStateMachine.transform.position.y;
+                Quaternion newRot = Quaternion.LookRotation(targetPos - _zombieStateMachine.transform.position);
+                _zombieStateMachine.transform.rotation = newRot;
+            }
+            // Slowly update our rotation to match the nav agents desired rotation BUT only if we are not persuing the player and are not in melee range
+            else if (!_zombieStateMachine.useRootRotation && !_zombieStateMachine.isTargetReached)
+            {
+                // Generate a new Quaternion representing the rotation we should have
+                Quaternion newRot = Quaternion.LookRotation(_zombieStateMachine.navAgent.desiredVelocity);
+                // Smoothly rotate to that new rotation over time
+                _zombieStateMachine.transform.rotation = Quaternion.Slerp(_zombieStateMachine.transform.rotation, newRot, Time.deltaTime * _slerpSpeed);
+            }
+            // If we have reached the target location and there is nothing there, drop to alerted state and look for targets.
+            else if (_zombieStateMachine.isTargetReached)
+            {
+                return AIStateType.Alerted;
+            }
+        }
+        
         // Do we have a visual threat that is the player
         if (_zombieStateMachine.VisualThreat.type == AITargetType.Visual_Player)
         {

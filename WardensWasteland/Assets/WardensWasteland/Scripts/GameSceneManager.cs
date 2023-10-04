@@ -14,6 +14,10 @@ using UnityEngine;
 // ------------------------------------------------------------------
 public class GameSceneManager : MonoBehaviour
 {
+    // Inspector Assigned
+    [SerializeField] private ParticleSystem _bloodParticles = null; // Reference to the blood particle system
+
+
     // Statics
     private static GameSceneManager _instance = null; // Singleton instance
 
@@ -31,7 +35,12 @@ public class GameSceneManager : MonoBehaviour
     }
 
     // Dictionary to store all registered AI state machines by their ID
-    private Dictionary<int, AIStateMachine> _stateMachines = new Dictionary<int, AIStateMachine>(); // Dictionary mapping AI instance IDs to state machines.    
+    private Dictionary<int, AIStateMachine> _stateMachines = new Dictionary<int, AIStateMachine>(); // Dictionary mapping AI instance IDs to state machines.
+
+
+    // Properties
+    public ParticleSystem bloodParticles { get { return _bloodParticles; } } // Accessor for the blood particle system
+
 
     // ------------------------------------------------------------------
     // Name : RegisterAIStateMachine
