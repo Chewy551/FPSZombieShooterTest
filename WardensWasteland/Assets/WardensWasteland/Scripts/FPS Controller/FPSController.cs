@@ -1,9 +1,89 @@
-﻿using System.Collections;
+﻿using JetBrains.Annotations;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.Characters.FirstPerson;
 
 public enum PlayerMoveStatus { NotMoving, Crouching, Walking, Running, NotGrounded, Landing }
+public enum CurveControlledBobCallbackType { Horizontal, Vertical }
+
+
+// Delegates
+public delegate void CurveControlBobCallback();
+
+[System.Serializable]
+public class CurveControlledBobEvent
+{
+    public float _time = 0.0f;
+    public CurveControlBobCallback _function = null;
+    public CurveControlledBobCallbackType _type = CurveControlledBobCallbackType.Vertical;
+}
+
+[System.Serializable]
+public class CurveControlledBob
+{
+    [SerializeField] AnimationCurve _bobCurve = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(0.5f, 1f),
+                                                                   new Keyframe(1f, 0f), new Keyframe(1.5f, -1f), 
+                                                                   new Keyframe(2f, 0f));
+
+    // Inspector Assigned Bob Control Variables
+    [SerializeField] float _horizontalMultiplier = 0.01f;
+    [SerializeField] float _verticalMultiplier   = 0.02f;
+    [SerializeField] float _verticaltoHorizontalSpeedRatio = 2.0f;
+    [SerializeField] float _baseInterval = 1.0f; 
+
+    // Internals
+    private float _prevXPlayHead;
+    private float _prevYPlayHead;
+    private float _xPlayHead;
+    private float _yPlayHead;
+    private float _curveEndTime;
+    private List<CurveControlledBobEvent> _events = new List<CurveControlledBobEvent>();
+
+    public void Initialize()
+    {
+        // Record time length of bob curve
+        _curveEndTime = _bobCurve[_bobCurve.length - 1].time;
+        _xPlayHead = 0.0f;
+        _yPlayHead = 0.0f;
+        _prevXPlayHead = 0.0f;
+        _prevYPlayHead = 0.0f; 
+    }
+
+    public void RegisterEventCallback(float time, CurveControlBobCallback function, CurveControlledBobCallbackType type)
+    {
+        CurveControlledBobEvent ccbeEvent = new CurveControlledBobEvent();
+        ccbeEvent._time = time;
+        ccbeEvent._function = function;
+        ccbeEvent._type = type;
+        _events.Add(ccbeEvent);
+        _events.Sort(
+                        delegate (CurveControlledBobEvent t1, CurveControlledBobEvent t2)
+                        {
+                            return (t1._time.CompareTo(t2._time));
+                        }
+                     );
+    }
+
+    public Vector3 GetVectorOffset(float speed)
+    {
+        _xPlayHead += (speed * Time.deltaTime) / _baseInterval;
+        _yPlayHead += ((speed * Time.deltaTime) / _baseInterval) * _verticaltoHorizontalSpeedRatio;
+
+        if (_xPlayHead > _curveEndTime)
+            _xPlayHead -= _curveEndTime;
+
+        if (_yPlayHead > _curveEndTime)
+            _yPlayHead -= _curveEndTime;
+
+        float xPos = _bobCurve.Evaluate(_xPlayHead) * _horizontalMultiplier;
+        float yPos = _bobCurve.Evaluate(_yPlayHead) * _verticalMultiplier;
+
+        // Return the bobbed Vector3
+        return new Vector3(xPos, yPos, 0f);
+    }
+}
+
 
 [RequireComponent (typeof(CharacterController))]
 public class FPSController : MonoBehaviour
@@ -12,8 +92,10 @@ public class FPSController : MonoBehaviour
     [SerializeField] private float _walkSpeed = 1.0f;
     [SerializeField] private float _runSpeed = 4.5f;
     [SerializeField] private float _jumpSpeed = 7.5f;
-    [SerializeField] private float _stickToGroundForce = 5.0f;
+    [SerializeField] private float _stickToGroundForce = 5.0f; 
     [SerializeField] private float _gravityMultiplier = 2.5f;
+    [SerializeField] private float _runStepLengthen = 0.75f;
+    [SerializeField] private CurveControlledBob _headBob = new CurveControlledBob();
 
     // Use Standard Assets Mouse Look class for mouse input -> Camera Look Control
     [SerializeField] private UnityStandardAssets.Characters.FirstPerson.MouseLook _mouseLook;
@@ -26,6 +108,7 @@ public class FPSController : MonoBehaviour
     private bool _previouslyGrounded = false;
     private bool _isWalking = true;
     private bool _isJumping = false;
+    private Vector3 _localSpaceCameraPos = Vector3.zero;
 
     // Timers
     private float _fallingTimer = 0.0f;
@@ -45,6 +128,7 @@ public class FPSController : MonoBehaviour
 
         // Get the main camera and cache local position within the FPS rig
         _camera = Camera.main;
+        _localSpaceCameraPos = _camera.transform.localPosition;
 
         // Set initial to not jumping and not moving
         _movementStatus = PlayerMoveStatus.NotMoving;
@@ -54,6 +138,9 @@ public class FPSController : MonoBehaviour
 
         // Setup Mouse Look Script
         _mouseLook.Init(transform, _camera.transform);
+
+        // Initialize Head Bob
+        _headBob.Initialize(); 
     }
 
     protected void Update()
@@ -170,5 +257,15 @@ public class FPSController : MonoBehaviour
 
         // Move the Character Controller
         _characterController.Move(_moveDirection * Time.fixedDeltaTime);
+
+        // Are we moving
+        if (_characterController.velocity.magnitude > 0.01f)
+        {
+            _camera.transform.localPosition = _localSpaceCameraPos + _headBob.GetVectorOffset(_characterController.velocity.magnitude * (_isWalking? 1.0f:_runStepLengthen));
+        }
+        else
+        {
+            _camera.transform.localPosition = _localSpaceCameraPos;
+        }
     }
 }
