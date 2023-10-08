@@ -8464,14 +8464,14 @@ MonoBehaviour:
   _randomPatrol: 0
   _currentWaypoint: -1
   _stoppingDistance: 1
-  _fov: 180
+  _fov: 120
   _sight: 0.5
   _hearing: 1
   _aggression: 0.5
   _health: 100
   _intelligence: 1
   _satisfaction: 0
-  _replenishRate: 0.5
+  _replenishRate: 2
   _depletionRate: 0.1
 --- !u!114 &815411639
 MonoBehaviour:
@@ -8514,9 +8514,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxDuration: 10
-  _waypointAngleThreshold: 25
-  _threatAngleThreshold: 10
-  _directionChangeTime: 1.5
+  _waypointAngleThreshold: 90
+  _threatAngleThreshold: 90
+  _directionChangeTime: 0.5
 --- !u!114 &815411642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8530,6 +8530,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 2
+  _lookAtWeight: 0.7
+  _lookAtAngleThreshold: 15
   _slerpSpeed: 5
   _repathDistanceMultiplier: 0.035
   _repathVisualMinDuration: 0.05
@@ -8537,6 +8539,22 @@ MonoBehaviour:
   _repathAudioMinDuration: 0.25
   _repathAudioMaxDuration: 5
   _maxDuration: 40
+--- !u!114 &815411643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815411633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09213d6c154115a4897404eec996d0f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 0
+  _lookAtWeight: 0.7
+  _lookAtAngleThreshold: 15
+  _slerpSpeed: 5
 --- !u!114 &815411644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8583,6 +8601,64 @@ Transform:
   m_Father: {fileID: 301580017}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90.00001, z: 0}
+--- !u!1 &1084350724
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1084350725}
+  - component: {fileID: 1084350727}
+  - component: {fileID: 1084350726}
+  m_Layer: 10
+  m_Name: Melee Zone Trigger
+  m_TagString: Melee Zone
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1084350725
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084350724}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1579083813}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1084350726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084350724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4e4964e06f6c1b49bbfe4cc46719379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!136 &1084350727
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084350724}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.8
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1218618855
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9040,6 +9116,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1302084888}
+  - {fileID: 1084350725}
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: -90.00001, z: 0}
@@ -9350,7 +9427,7 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 0
-  m_Extents: {x: 0.3, y: 1, z: 0.3}
+  m_Extents: {x: 0.1, y: 1, z: 0.1}
   m_MoveThreshold: 0.1
   m_Carve: 0
   m_CarveOnlyStationary: 1
