@@ -233,6 +233,39 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &135145424 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100014, guid: 9b68a1631aea56a4c871c3072ea40516,
+    type: 3}
+  m_PrefabInstance: {fileID: 1602245250}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &135145426
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 135145424}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.18
+  m_Center: {x: 0, y: 0.07, z: 0}
+--- !u!114 &135145427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 135145424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98be2a1d0abbab34d9d27f8c76c68991, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parameter: LeftHand
+  _bloodParticlesBurstAmount: 10
 --- !u!1 &233921711 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100138, guid: b71909a09670b1842b4f57ff614a4f5e,
@@ -297,6 +330,39 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1602245250}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &437395661 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100076, guid: 9b68a1631aea56a4c871c3072ea40516,
+    type: 3}
+  m_PrefabInstance: {fileID: 1602245250}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &437395663
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437395661}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.18
+  m_Center: {x: 0, y: 0.07, z: 0}
+--- !u!114 &437395664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437395661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98be2a1d0abbab34d9d27f8c76c68991, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parameter: RightHand
+  _bloodParticlesBurstAmount: 10
 --- !u!1 &447605350
 GameObject:
   m_ObjectHideFlags: 0
@@ -8551,7 +8617,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09213d6c154115a4897404eec996d0f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 0
+  _speed: 2
+  _stoppingDistance: 1.2
   _lookAtWeight: 0.7
   _lookAtAngleThreshold: 15
   _slerpSpeed: 5
@@ -9440,6 +9507,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 546531752}
     m_Modifications:
+    - target: {fileID: 100000, guid: 9b68a1631aea56a4c871c3072ea40516, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100014, guid: 9b68a1631aea56a4c871c3072ea40516, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 100076, guid: 9b68a1631aea56a4c871c3072ea40516, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 100126, guid: 9b68a1631aea56a4c871c3072ea40516, type: 3}
       propertyPath: m_Name
       value: AI Entity
@@ -9760,6 +9839,66 @@ Transform:
   m_Father: {fileID: 301580017}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2109217427
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2109217428}
+  - component: {fileID: 2109217429}
+  - component: {fileID: 2109217430}
+  m_Layer: 11
+  m_Name: Mouth Trigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2109217428
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109217427}
+  m_LocalRotation: {x: 0.18223555, y: 0, z: 0, w: 0.9832549}
+  m_LocalPosition: {x: 0, y: 0.03, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 386575287}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 21, y: 0, z: 0}
+--- !u!136 &2109217429
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109217427}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.08
+  m_Height: 0.45
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: 0.24}
+--- !u!114 &2109217430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109217427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98be2a1d0abbab34d9d27f8c76c68991, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parameter: Mouth
+  _bloodParticlesBurstAmount: 10
 --- !u!1 &2123462628
 GameObject:
   m_ObjectHideFlags: 0
