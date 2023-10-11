@@ -266,6 +266,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _parameter: LeftHand
   _bloodParticlesBurstAmount: 10
+  _damageAmount: 50
 --- !u!1 &233921711 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100138, guid: b71909a09670b1842b4f57ff614a4f5e,
@@ -363,6 +364,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _parameter: RightHand
   _bloodParticlesBurstAmount: 10
+  _damageAmount: 50
 --- !u!1 &447605350
 GameObject:
   m_ObjectHideFlags: 0
@@ -8965,6 +8967,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 161728158d9581f459d6e9df7834de5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bloodTexture: {fileID: 2800000, guid: 3ff03db798c0e7d4f8c86a40e0203f4c, type: 3}
+  _bloodNormalMap: {fileID: 2800000, guid: 83f70d1ba08dfb3438809bb85caeb9e8, type: 3}
+  _bloodAmount: 0
+  _minBloodAmount: 0
+  _distortion: 0.21
+  _autoFade: 1
+  _fadeSpeed: 0.05
   _shader: {fileID: 4800000, guid: f90ad8336a22b124a92e1a9beaddd378, type: 3}
 --- !u!1 &1367446417
 GameObject:
@@ -9202,6 +9211,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1579083813}
   - component: {fileID: 1579083815}
+  - component: {fileID: 1579083819}
   - component: {fileID: 1579083814}
   - component: {fileID: 1579083817}
   - component: {fileID: 1579083816}
@@ -9542,6 +9552,22 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &1579083819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579083812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19d36ee8fd904a84c870d95593fa96cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meleeTrigger: {fileID: 1084350727}
+  _cameraBloodEffect: {fileID: 1302084891}
+  _camera: {fileID: 1302084889}
+  _health: 100
 --- !u!1001 &1602245250
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9947,6 +9973,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _parameter: Mouth
   _bloodParticlesBurstAmount: 10
+  _damageAmount: 10
 --- !u!1 &2123462628
 GameObject:
   m_ObjectHideFlags: 0

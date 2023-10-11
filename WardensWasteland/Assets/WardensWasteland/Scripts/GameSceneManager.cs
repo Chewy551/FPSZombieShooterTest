@@ -5,6 +5,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class PlayerInfo
+{
+    public Collider collider = null;
+    public CharacterManager characterManager = null;
+    public Camera camera = null;
+    public CapsuleCollider meleeTrigger = null;
+}
+
 // ------------------------------------------------------------------
 // Name : GameSceneManager
 // Desc : This class is responsible for managing game scenes. It provides 
@@ -36,6 +44,7 @@ public class GameSceneManager : MonoBehaviour
 
     // Dictionary to store all registered AI state machines by their ID
     private Dictionary<int, AIStateMachine> _stateMachines = new Dictionary<int, AIStateMachine>(); // Dictionary mapping AI instance IDs to state machines.
+    private Dictionary<int, PlayerInfo> _playerInfos = new Dictionary<int, PlayerInfo>(); // Dictionary mapping player instance IDs to player info.
 
 
     // Properties
@@ -68,5 +77,29 @@ public class GameSceneManager : MonoBehaviour
         return null;
     }
 
+    // ------------------------------------------------------------------
+    // Name : RegisterPlayerInfo
+    // Desc : Registers a Player with a specific key.
+    // ------------------------------------------------------------------
+    public void RegisterPlayerInfo(int key, PlayerInfo playerInfo)
+    {
+        if (!_playerInfos.ContainsKey(key))
+        {
+            _playerInfos[key] = playerInfo;
+        }
+    }
 
+    // ------------------------------------------------------------------
+    // Name : GetPlayerInfo
+    // Desc : Retrieves a Player by its key.
+    // ------------------------------------------------------------------
+    public PlayerInfo GetPlayerInfo(int key)
+    {
+        PlayerInfo player = null;
+        if (_playerInfos.TryGetValue(key, out player))
+        {
+            return player;
+        }
+        return null;
+    }
 }
