@@ -46,6 +46,11 @@ public class AIZombieState_Attack1 : AIZombieState
     // ---------------------------------------------------------------------
     public override AIStateType OnUpdate()
     {
+        if (_zombieStateMachine.navAgent.enabled == false)
+        {
+            return AIStateType.None;
+        }
+
         Vector3 targetPos;
         Quaternion newRot;
 

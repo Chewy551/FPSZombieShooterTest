@@ -59,6 +59,11 @@ public class AIZombieState_Idle1 : AIZombieState
     // ------------------------------------------------------------------
     public override AIStateType OnUpdate()
     {
+        if (_zombieStateMachine.navAgent.enabled == false)
+        {
+            return AIStateType.None;
+        }
+
         if (_zombieStateMachine == null) return AIStateType.Idle;
 
         // If we detect a player, enter pursuit state

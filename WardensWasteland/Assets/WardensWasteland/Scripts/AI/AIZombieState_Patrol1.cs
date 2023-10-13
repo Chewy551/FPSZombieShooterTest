@@ -57,8 +57,13 @@ public class AIZombieState_Patrol1 : AIZombieState
     // ------------------------------------------------------------------------
     public override AIStateType OnUpdate()
     {
-        // Do we have a visual threat that is the player
-        if (_zombieStateMachine.VisualThreat.type == AITargetType.Visual_Player)
+        if (_zombieStateMachine.navAgent.enabled == false)
+        {
+            return AIStateType.None;
+        }
+
+            // Do we have a visual threat that is the player
+            if (_zombieStateMachine.VisualThreat.type == AITargetType.Visual_Player)
         {
             _zombieStateMachine.SetTarget(_zombieStateMachine.VisualThreat);
             return AIStateType.Pursuit;
@@ -114,12 +119,13 @@ public class AIZombieState_Patrol1 : AIZombieState
             Quaternion newRot = Quaternion.LookRotation(_zombieStateMachine.navAgent.desiredVelocity);
             _zombieStateMachine.transform.rotation = Quaternion.Slerp(_zombieStateMachine.transform.rotation, newRot, Time.deltaTime * _slerpSpeed);
         }
-
+        
         if (_zombieStateMachine.navAgent.isPathStale || 
             !_zombieStateMachine.navAgent.hasPath || 
             _zombieStateMachine.navAgent.pathStatus != NavMeshPathStatus.PathComplete)
         {
-            _zombieStateMachine.navAgent.SetDestination(_zombieStateMachine.GetWaypointPosition(true));
+
+             _zombieStateMachine.navAgent.SetDestination(_zombieStateMachine.GetWaypointPosition(true));
         }
 
         // Stay in Patrol State

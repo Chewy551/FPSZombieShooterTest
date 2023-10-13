@@ -89,9 +89,12 @@ public abstract class AIStateMachine : MonoBehaviour
     protected int _rootPositionRefCount = 0; // Reference count for root position updates.
     protected int _rootRotationRefCount = 0; // Reference count for root rotation updates.
     protected bool _isTargetReached = false; // Whether or not the AI has reached its target.
+    protected List<Rigidbody> _bodyParts = new List<Rigidbody>(); // List of the AI's body parts.
+    protected int _aiBodyPartLayer = -1; // The layer of the AI's body parts.
 
     // Serialized fields allowing for adjustments within the Unity editor.
     [SerializeField] protected AIStateType _currentStateType = AIStateType.Idle;
+    [SerializeField] Transform _rootBone = null; // The root bone of the AI's animation hierarchy.
     [SerializeField] protected SphereCollider _targetTrigger = null; // Collider to detect when target is within range.
     [SerializeField] protected SphereCollider _sensorTrigger = null; // Collider to sense environment.
     [SerializeField] protected AIWaypointNetwork _waypointNetwork = null; // Waypoint network for the AI to follow.
@@ -163,10 +166,27 @@ public abstract class AIStateMachine : MonoBehaviour
         _navAgent = GetComponent<NavMeshAgent>();
         _collider = GetComponent<Collider>();
 
+        // Get BodyPart Layer
+        _aiBodyPartLayer = LayerMask.NameToLayer("AI Body Part");
+
         if (GameSceneManager.instance != null)
         {
             if (_collider) GameSceneManager.instance.RegisterAIStateMachine(_collider.GetInstanceID(), this);
             if (_sensorTrigger) GameSceneManager.instance.RegisterAIStateMachine(_sensorTrigger.GetInstanceID(), this);
+        }
+
+        // Fetch all the rigid bodies in the AI's children.
+        if (_rootBone != null)
+        {
+            Rigidbody[] bodies = _rootBone.GetComponentsInChildren<Rigidbody>();
+            foreach (Rigidbody bodyPart in bodies)
+            {
+                if (bodyPart != null && bodyPart.gameObject.layer == _aiBodyPartLayer)
+                {
+                    _bodyParts.Add(bodyPart);
+                    GameSceneManager.instance.RegisterAIStateMachine(bodyPart.GetInstanceID(), this);
+                }
+            }
         }
     }
 
@@ -493,6 +513,11 @@ public abstract class AIStateMachine : MonoBehaviour
     {
         _rootPositionRefCount += rootPosition;
         _rootRotationRefCount += rootRotation;
+    }
+
+    public virtual void TakeDamage(Vector3 position, Vector3 force, int damage, Rigidbody bodyPart, CharacterManager characterManager, int hitDirection = 0)
+    {
+        
     }
 
 }

@@ -61,6 +61,11 @@ public class AIZombieState_Pursuit1 : AIZombieState
     // ---------------------------------------------------------------------
     public override AIStateType OnUpdate()
     {
+        if (_zombieStateMachine.navAgent.enabled == false)
+        {
+            return AIStateType.None;
+        }
+
         _timer += Time.deltaTime;
         _repathTimer += Time.deltaTime;
 
