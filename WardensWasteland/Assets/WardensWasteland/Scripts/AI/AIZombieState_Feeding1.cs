@@ -55,10 +55,6 @@ public class AIZombieState_Feeding1 : AIZombieState
 
     public override AIStateType OnUpdate()
     {
-        if (_zombieStateMachine.navAgent.enabled == false)
-        {
-            return AIStateType.None;
-        }
 
         _timer += Time.deltaTime;
 

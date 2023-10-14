@@ -57,10 +57,6 @@ public class AIZombieState_Patrol1 : AIZombieState
     // ------------------------------------------------------------------------
     public override AIStateType OnUpdate()
     {
-        if (_zombieStateMachine.navAgent.enabled == false)
-        {
-            return AIStateType.None;
-        }
 
             // Do we have a visual threat that is the player
             if (_zombieStateMachine.VisualThreat.type == AITargetType.Visual_Player)
