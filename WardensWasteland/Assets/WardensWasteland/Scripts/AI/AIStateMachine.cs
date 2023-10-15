@@ -91,6 +91,7 @@ public abstract class AIStateMachine : MonoBehaviour
     protected bool _isTargetReached = false; // Whether or not the AI has reached its target.
     protected List<Rigidbody> _bodyParts = new List<Rigidbody>(); // List of the AI's body parts.
     protected int _aiBodyPartLayer = -1; // The layer of the AI's body parts.
+    protected bool _cinematicEnabled = false; // Whether or not the AI is in cinematic mode.
 
     // Serialized fields allowing for adjustments within the Unity editor.
     [SerializeField] protected AIStateType _currentStateType = AIStateType.Idle;
@@ -157,6 +158,8 @@ public abstract class AIStateMachine : MonoBehaviour
             }
         }
     }
+
+    public bool cinematicEnabled { get { return _cinematicEnabled; } set { _cinematicEnabled = value; } }
 
     // Initialization of cached references.
     protected virtual void Awake()

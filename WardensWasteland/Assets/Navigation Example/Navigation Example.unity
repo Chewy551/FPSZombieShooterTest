@@ -8849,6 +8849,11 @@ MonoBehaviour:
   _hearing: 1
   _aggression: 0.5
   _health: 100
+  _lowerBodyDamage: 0
+  _upperBodyDamage: 0
+  _upperBodyThreshold: 30
+  _limpThreshold: 30
+  _crawlThreshold: 90
   _intelligence: 1
   _satisfaction: 0
   _replenishRate: 2
@@ -10154,6 +10159,7 @@ MonoBehaviour:
   _cameraBloodEffect: {fileID: 1302084891}
   _camera: {fileID: 1302084889}
   _health: 100
+  _weaponForce: 20
 --- !u!1001 &1602245250
 PrefabInstance:
   m_ObjectHideFlags: 0
