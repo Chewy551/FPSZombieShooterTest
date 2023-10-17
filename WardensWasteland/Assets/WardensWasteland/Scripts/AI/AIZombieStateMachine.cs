@@ -8,6 +8,19 @@ using UnityEngine;
 public enum AIBoneControlType { Animated, Ragdoll, RagdollToAnim }
 
 // ------------------------------------------------------------------
+// Name : BodyPartSnapshot
+// Desc : Used to store information about the position of
+//        body parts when transition from ragdoll
+// ------------------------------------------------------------------
+public class  BodyPartSnapshot
+{
+    public Transform transform;
+    public Vector3 position;
+    public Quaternion rotation;
+    public Quaternion localRotation;
+}
+
+// ------------------------------------------------------------------
 // Name : AIZombieStateMachine
 // Desc : Class representing the state machine for a zombie AI.
 //        Inherits from the AIStateMachine base class and provides
@@ -31,6 +44,8 @@ public class AIZombieStateMachine : AIStateMachine
     [SerializeField][Range(0.0f, 1.0f)]    float _satisfaction  = 1.0f;  // How satisfied the zombie is (0 = totally unsatisfied, 1 = super satisfied)
     [SerializeField]                       float _replenishRate = 0.5f; // How quickly the zombie regains satisfaction
     [SerializeField]                       float _depletionRate = 0.1f; // How quickly the zombie loses satisfaction when not feeding
+    [SerializeField]                       float _reanimationBlendTime = 1.5f; // How long it takes to reanimate the zombie
+    [SerializeField]                       float _reanimationWaitTime = 3.0f; // How long to wait before reanimating the zombie 
 
     // Private from Animator Parameters
     // These parameters are used to communicate and control the animations of the zombie.
@@ -42,6 +57,13 @@ public class AIZombieStateMachine : AIStateMachine
 
     // Ragdoll Stuff
     private AIBoneControlType _boneControlType = AIBoneControlType.Animated; // How the zombie is currently being controlled
+    private List<BodyPartSnapshot> _bodyPartSnapshots = new List<BodyPartSnapshot>(); // List of body parts and their positions when the zombie is ragdolling
+    private float _ragdollEndTime = float.MinValue; // The time when the zombie will stop being a ragdoll
+    private Vector3 _ragdollHipPosition; // The position of the zombie's hips when it is a ragdoll
+    private Vector3 _ragdollFeetPosition; // The position of the zombie's feet when it is a ragdoll
+    private Vector3 _ragdollHeadPosition; // The position of the zombie's head when it is a ragdoll
+    private IEnumerator _reanimationCoroutine = null; // Coroutine used to reanimate the zombie
+    private float _mecanimTransitionTime = 0.1f; // The time it takes to transition from ragdoll to animated
 
     // Hashes
     // Cached hashes for the various parameters used in the Animator, 
@@ -80,6 +102,20 @@ public class AIZombieStateMachine : AIStateMachine
     protected override void Start()
     {
         base.Start();
+
+        // Create BodyBpartSnapShot List
+        if (_rootBone != null)
+        {
+            Transform[] transforms = _rootBone.GetComponentsInChildren<Transform>();
+            foreach(Transform transform in transforms)
+            {
+                BodyPartSnapshot snapShot = new BodyPartSnapshot();
+                snapShot.transform = transform;
+                //_bodyParts.Add(snapShot);
+
+            }
+        }
+
         UpdateAnimatorDamage();
     }
 
@@ -151,7 +187,13 @@ public class AIZombieStateMachine : AIStateMachine
 
                 if (_health > 0)
                 {
-                    // TODO: Reanimate Zombie
+                    if (_reanimationCoroutine != null)
+                    {
+                        StopCoroutine(_reanimationCoroutine);
+                    }
+
+                    _reanimationCoroutine = Reanimate();
+                    StartCoroutine(_reanimationCoroutine);
                 }
             }
 
@@ -279,8 +321,23 @@ public class AIZombieStateMachine : AIStateMachine
 
             if (_health > 0)
             {
-                // TODO: Reanimate Zombie
+                if (_reanimationCoroutine != null)
+                {
+                    StopCoroutine(_reanimationCoroutine);
+                }
+
+                _reanimationCoroutine = Reanimate();
+                StartCoroutine(_reanimationCoroutine);
             }
         }
+    }
+
+    // ------------------------------------------------------------------------
+    // Name : Reanimate (Coroutine)
+    // Desc : Coroutine used to reanimate the zombie after a period of time.
+    // ------------------------------------------------------------------------
+    private IEnumerator Reanimate()
+    {
+        return null;
     }
 }

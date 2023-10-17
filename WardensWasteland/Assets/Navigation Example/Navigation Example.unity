@@ -8838,6 +8838,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentStateType: 1
   _rootBone: {fileID: 850392849}
+  _rootBoneAlignment: 2
   _targetTrigger: {fileID: 1761092763}
   _sensorTrigger: {fileID: 1785862496}
   _waypointNetwork: {fileID: 1701932394}
@@ -8858,6 +8859,8 @@ MonoBehaviour:
   _satisfaction: 0
   _replenishRate: 2
   _depletionRate: 0.1
+  _reanimationBlendTime: 1.5
+  _reanimationWaitTime: 3
 --- !u!114 &815411639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8885,7 +8888,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _turnOnSpotThreshold: 90
   _slerpSpeed: 5
-  _speed: 1
+  _speed: 2
 --- !u!114 &815411641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8914,7 +8917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce3e8604d0992864e97c950458dbdb61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 2
+  _speed: 3
   _lookAtWeight: 0.7
   _lookAtAngleThreshold: 15
   _slerpSpeed: 5

@@ -24,6 +24,8 @@ public enum AITargetType { None, Waypoint, Visual_Player, Visual_Light, Visual_F
 // ------------------------------------------------------------------
 public enum AITriggerEventType { Enter, Stay, Exit }
 
+public enum AIBoneAlignmentType { XAxis, YAxis, ZAxis, XAxisInverted, YAxisInverted, ZAxisInverted }
+
 // ------------------------------------------------------------------
 // Name : AITarget
 // Desc : Struct to define the properties of a target in the game world.
@@ -95,7 +97,8 @@ public abstract class AIStateMachine : MonoBehaviour
 
     // Serialized fields allowing for adjustments within the Unity editor.
     [SerializeField] protected AIStateType _currentStateType = AIStateType.Idle;
-    [SerializeField] Transform _rootBone = null; // The root bone of the AI's animation hierarchy.
+    [SerializeField] protected Transform _rootBone = null; // The root bone of the AI's animation hierarchy.
+    [SerializeField] protected AIBoneAlignmentType _rootBoneAlignment = AIBoneAlignmentType.ZAxis; // The alignment of the root bone.
     [SerializeField] protected SphereCollider _targetTrigger = null; // Collider to detect when target is within range.
     [SerializeField] protected SphereCollider _sensorTrigger = null; // Collider to sense environment.
     [SerializeField] protected AIWaypointNetwork _waypointNetwork = null; // Waypoint network for the AI to follow.
