@@ -1,6 +1,6 @@
 # WardensWasteland
 
-Zombie FPS
+Zombie First Person Shooter
 
 ## License and Attribution
 
