@@ -16,6 +16,8 @@ public class RootMotionConfigurator : AIStateMachineLink
     [SerializeField] private int _rootPosition = 0;
     [SerializeField] private int _rootRotation = 0;
 
+    private bool _rootMotionProcessed = false;
+
     // ------------------------------------------------------------------
     // Name : OnStateEnter
     // Desc : Called by Unity when the AI enters a state. Adjusts the 
@@ -26,6 +28,7 @@ public class RootMotionConfigurator : AIStateMachineLink
         if (_stateMachine)
         {
             _stateMachine.AddRootMotionRequest(_rootPosition, _rootRotation);
+            _rootMotionProcessed = true;
         }
     }
 
@@ -36,9 +39,10 @@ public class RootMotionConfigurator : AIStateMachineLink
     // ------------------------------------------------------------------
     override public void OnStateExit(Animator animator, AnimatorStateInfo animStateInfo, int layerIndex)
     {
-        if (_stateMachine)
+        if (_stateMachine && _rootMotionProcessed)
         {
             _stateMachine.AddRootMotionRequest(-_rootPosition, -_rootRotation);
+            _rootMotionProcessed = false;
         }
     }
 }

@@ -184,7 +184,7 @@ ModelImporter:
       name: Reanimate From Front
       takeName: mixamo.com
       firstFrame: 0
-      lastFrame: 106
+      lastFrame: 76
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -194,7 +194,7 @@ ModelImporter:
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
-      loopBlendPositionY: 0
+      loopBlendPositionY: 1
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1

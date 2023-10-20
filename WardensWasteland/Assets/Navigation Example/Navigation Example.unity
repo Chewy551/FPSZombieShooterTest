@@ -8861,6 +8861,9 @@ MonoBehaviour:
   _depletionRate: 0.1
   _reanimationBlendTime: 1.5
   _reanimationWaitTime: 3
+  _geometryLayers:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!114 &815411639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8888,7 +8891,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _turnOnSpotThreshold: 90
   _slerpSpeed: 5
-  _speed: 2
+  _speed: 1
 --- !u!114 &815411641
 MonoBehaviour:
   m_ObjectHideFlags: 0
