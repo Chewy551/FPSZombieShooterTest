@@ -8850,7 +8850,7 @@ MonoBehaviour:
   _hearing: 1
   _aggression: 0.5
   _health: 100
-  _lowerBodyDamage: 0
+  _lowerBodyDamage: 95
   _upperBodyDamage: 0
   _upperBodyThreshold: 30
   _limpThreshold: 30
@@ -8908,6 +8908,7 @@ MonoBehaviour:
   _waypointAngleThreshold: 90
   _threatAngleThreshold: 90
   _directionChangeTime: 0.5
+  _slerpSpeed: 45
 --- !u!114 &815411642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9201,6 +9202,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: b71909a09670b1842b4f57ff614a4f5e, type: 3}
       propertyPath: m_Name
       value: copzombie_l_actisdato
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: b71909a09670b1842b4f57ff614a4f5e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: b71909a09670b1842b4f57ff614a4f5e, type: 3}
       propertyPath: m_LocalPosition.x
