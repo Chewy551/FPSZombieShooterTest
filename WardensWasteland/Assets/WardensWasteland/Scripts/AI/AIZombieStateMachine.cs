@@ -408,13 +408,15 @@ public class AIZombieStateMachine : AIStateMachine
                 }
 
                 NavMeshHit navMeshHit;
+                Vector3 baseOffSet = Vector3.zero;
+                if (_navAgent) baseOffSet.y = _navAgent.baseOffset;
                 if (NavMesh.SamplePosition(newRootPosition, out navMeshHit, 25.0f, NavMesh.AllAreas))
                 {
-                    transform.position = navMeshHit.position;
+                    transform.position = navMeshHit.position + baseOffSet;
                 }
                 else
                 {
-                    transform.position = newRootPosition;
+                    transform.position = newRootPosition + baseOffSet;
                 }
 
 

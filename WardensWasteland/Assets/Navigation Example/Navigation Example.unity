@@ -239,6 +239,19 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1602245250}
   m_PrefabAsset: {fileID: 0}
+--- !u!135 &135145426
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 135145424}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.18
+  m_Center: {x: 0, y: 0.06, z: 0}
 --- !u!114 &135145427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -405,6 +418,19 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1602245250}
   m_PrefabAsset: {fileID: 0}
+--- !u!135 &437395663
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437395661}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.18
+  m_Center: {x: 0, y: 0.06, z: 0}
 --- !u!114 &437395664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8807,7 +8833,7 @@ NavMeshAgent:
   m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 0
+  m_BaseOffset: 0.02
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!136 &815411637
@@ -8850,13 +8876,13 @@ MonoBehaviour:
   _hearing: 1
   _aggression: 0.5
   _health: 100
-  _lowerBodyDamage: 95
+  _lowerBodyDamage: 0
   _upperBodyDamage: 0
   _upperBodyThreshold: 30
   _limpThreshold: 30
   _crawlThreshold: 90
   _intelligence: 1
-  _satisfaction: 0
+  _satisfaction: 0.1
   _replenishRate: 2
   _depletionRate: 0.1
   _reanimationBlendTime: 1.5
@@ -8876,7 +8902,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1755f65c7c963c846aa932fee850fa17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _idleTimeRange: {x: 1, y: 2}
+  _idleTimeRange: {x: 1, y: 10}
 --- !u!114 &815411640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9205,7 +9231,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: b71909a09670b1842b4f57ff614a4f5e, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: b71909a09670b1842b4f57ff614a4f5e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10171,6 +10197,7 @@ MonoBehaviour:
   _camera: {fileID: 1302084889}
   _health: 100
   _weaponForce: 20
+  _weaponDamage: 25
 --- !u!1001 &1602245250
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11110,6 +11137,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2109217428}
   - component: {fileID: 2109217430}
+  - component: {fileID: 2109217429}
   m_Layer: 11
   m_Name: Mouth Trigger
   m_TagString: Untagged
@@ -11131,6 +11159,20 @@ Transform:
   m_Father: {fileID: 386575287}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 21, y: 0, z: 0}
+--- !u!136 &2109217429
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109217427}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.08
+  m_Height: 0.45
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: 0.24}
 --- !u!114 &2109217430
 MonoBehaviour:
   m_ObjectHideFlags: 0
