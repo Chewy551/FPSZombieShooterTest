@@ -8833,7 +8833,7 @@ NavMeshAgent:
   m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 0.02
+  m_BaseOffset: 0.01
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!136 &815411637
@@ -9231,7 +9231,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: b71909a09670b1842b4f57ff614a4f5e, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: b71909a09670b1842b4f57ff614a4f5e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10197,7 +10197,7 @@ MonoBehaviour:
   _camera: {fileID: 1302084889}
   _health: 100
   _weaponForce: 20
-  _weaponDamage: 25
+  _weaponDamage: 50
 --- !u!1001 &1602245250
 PrefabInstance:
   m_ObjectHideFlags: 0

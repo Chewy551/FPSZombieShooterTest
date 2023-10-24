@@ -74,6 +74,8 @@ public class AIZombieStateMachine : AIStateMachine
     private int _reanimateFromBackHash = Animator.StringToHash("Reanimate From Back");
     private int _reanimateFromFrontHash = Animator.StringToHash("Reanimate From Front");
     private int _stateHash = Animator.StringToHash("State");
+    private int _upperBodyLayer = -1;
+    private int _lowerBodyLayer = -1;
 
     // Public Properties
     public float replenishRate { get { return _replenishRate; } }
@@ -101,6 +103,13 @@ public class AIZombieStateMachine : AIStateMachine
     protected override void Start()
     {
         base.Start();
+
+        if (_animator != null)
+        {
+            // Cache Layer Indices
+            _lowerBodyLayer = _animator.GetLayerIndex("Lower Body");
+            _upperBodyLayer = _animator.GetLayerIndex("Upper Body");
+        }
 
         // Create BodyPartSnapShot List
         if (_rootBone != null)
@@ -142,6 +151,16 @@ public class AIZombieStateMachine : AIStateMachine
     {
         if (_animator != null)
         {
+            if (_lowerBodyLayer != -1)
+            {
+                _animator.SetLayerWeight(_lowerBodyLayer, (_lowerBodyDamage > _limpThreshold && _lowerBodyDamage < _crawlThreshold) ? 1.0f : 0.0f);
+            }
+
+            if (_upperBodyLayer != -1)
+            {
+                _animator.SetLayerWeight(_upperBodyLayer, (_upperBodyDamage > _upperBodyThreshold && _lowerBodyDamage < _crawlThreshold) ? 1.0f : 0.0f);
+            }
+
             _animator.SetBool(_crawlingHash, isCrawling);
             _animator.SetInteger(_lowerBodyDamageHash, _lowerBodyDamage);
             _animator.SetInteger(_upperBodyDamageHash, _upperBodyDamage);
