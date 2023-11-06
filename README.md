@@ -1,6 +1,6 @@
 # WardensWasteland
 
-Zombie First Person Shooter.
+Zombie First Person Shooter..
 
 ## License and Attribution
 
